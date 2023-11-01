@@ -1,3 +1,7 @@
+## 0.0.3
+
+* new method SambaBrowser.uploadFile.
+
 ## 0.0.2
 
 * Update README with examples and package information.

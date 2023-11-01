@@ -42,6 +42,11 @@ public class SambaBrowserPlugin implements FlutterPlugin, MethodCallHandler {
       return;
     }
 
+    if (call.method.equals("uploadFile")) {
+      SambaFileUploader.uploadFile(call, result);
+      return;
+    }
+
     result.notImplemented();
   }
 

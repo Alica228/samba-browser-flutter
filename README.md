@@ -14,7 +14,10 @@ SambaBrowser.getShareList('smb://192.168.0.1/', 'domain.net', 'admin', 'password
     .then((shares) => print('Shares found: ${shares.cast<String>()}'));
     
 SambaBrowser.saveFile('./local/', 'downloaded.pdf', 'smb://192.168.0.1/example.pdf', 'domain.net', 'admin', 'password')
-    .then((path) => print('File downloaded to: $path'));
+    .then((path) => print('File downloaded to: $path'));    
+
+SambaBrowser.uploadFile('smb://192.168.0.1/', 'uploaded.pdf', './local/example.pdf', 'domain.net', 'admin', 'password')
+    .then((path) => print('File uploaded to: $path'));
 ````
 
 ## Contributing

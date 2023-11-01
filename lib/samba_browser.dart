@@ -38,4 +38,20 @@ class SambaBrowser {
     final String filePath = await _channel.invokeMethod('saveFile', args);
     return filePath;
   }
+
+  /// Upload a file with a specified name under a given folder.
+  /// The [domain] parameter is only required under Android.
+  static Future<String> uploadFile(String uploadFolder, String fileName, String path, String domain, String username, String password) async {
+    Map<String, String> args = {
+      'uploadFolder': uploadFolder.endsWith('/') ? uploadFolder : '$uploadFolder/',
+      'fileName': fileName.startsWith('/') ? fileName.replaceFirst('/', '') : fileName,
+      'path': path,
+      'domain': domain,
+      'username': username,
+      'password': password,
+    };
+
+    final String filePath = await _channel.invokeMethod('uploadFile', args);
+    return filePath;
+  }
 }
