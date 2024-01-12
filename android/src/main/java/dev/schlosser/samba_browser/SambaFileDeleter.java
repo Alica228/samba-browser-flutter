@@ -16,7 +16,7 @@ import jcifs.smb.NtlmPasswordAuthentication;
 import jcifs.smb.SmbFile;
 import jcifs.smb.SmbFileOutputStream;
 
-public class SambaFileUploader {
+public class SambaFileDeleter {
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     static void deleteFile(MethodCall call, MethodChannel.Result result)  {
