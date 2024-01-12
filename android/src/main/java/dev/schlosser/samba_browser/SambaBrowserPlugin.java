@@ -47,6 +47,11 @@ public class SambaBrowserPlugin implements FlutterPlugin, MethodCallHandler {
       return;
     }
 
+    if (call.method.equals("deleteFile")) {
+      SambaFileDeleter.deleteFile(call, result);
+      return;
+    }
+
     result.notImplemented();
   }
 

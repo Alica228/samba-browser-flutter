@@ -54,4 +54,18 @@ class SambaBrowser {
     final String filePath = await _channel.invokeMethod('uploadFile', args);
     return filePath;
   }
+
+  /// Delete a file with a specified name.
+  /// The [domain] parameter is only required under Android.
+  static Future<String> deleteFile(String fileName, String domain, String username, String password) async {
+    Map<String, String> args = {
+      'fileName': fileName.startsWith('/') ? fileName.replaceFirst('/', '') : fileName,
+      'domain': domain,
+      'username': username,
+      'password': password,
+    };
+
+    final String filePath = await _channel.invokeMethod('deleteFile', args);
+    return filePath;
+  }
 }
