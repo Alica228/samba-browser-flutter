@@ -13,8 +13,8 @@ import java.util.concurrent.Executors;
 import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
 import jcifs.smb.NtlmPasswordAuthentication;
+import jcifs.smb.SmbAuthException;
 import jcifs.smb.SmbFile;
-import jcifs.smb.SmbFileOutputStream;
 
 public class SambaFileDeleter {
 
@@ -22,18 +22,20 @@ public class SambaFileDeleter {
     static void deleteFile(MethodCall call, MethodChannel.Result result)  {
         ExecutorService executor = Executors.newSingleThreadExecutor();
 
-        String path = call.argument("fileName");
-        if (path.endsWith("/")) {
+        String url = call.argument("url");
+        if (url.endsWith("/")) {
             result.error("Can not delete directory.", null, null);
             return;
         }
 
         executor.execute(() -> {
             try {
-                SmbFile file = new SmbFile(call.argument("fileName").toString(), new NtlmPasswordAuthentication(call.argument("domain"), call.argument("username"), call.argument("password")));
+                SmbFile file = new SmbFile(url, new NtlmPasswordAuthentication(call.argument("domain"), call.argument("username"), call.argument("password")));
                 file.delete();
-                result.success(file.getPath());
+                result.success("");
 
+            } catch(SmbAuthException e) {
+                result.error("The given user could not be authenticated.", e.getMessage(), null);
             } catch (IOException e) {
                 result.error("An iO-error occurred.", e.getMessage(), null);
             }

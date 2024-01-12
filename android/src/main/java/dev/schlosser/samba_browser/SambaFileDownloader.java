@@ -13,6 +13,7 @@ import java.util.concurrent.Executors;
 import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
 import jcifs.smb.NtlmPasswordAuthentication;
+import jcifs.smb.SmbAuthException;
 import jcifs.smb.SmbFile;
 import jcifs.smb.SmbFileInputStream;
 
@@ -44,9 +45,12 @@ public class SambaFileDownloader {
                     outStream.write(fileBytes, 0, n);
                 }
 
+                in.close();
                 outStream.close();
                 result.success(outFile.getAbsolutePath());
 
+            } catch(SmbAuthException e) {
+                result.error("The given user could not be authenticated.", e.getMessage(), null);
             } catch (IOException e) {
                 result.error("An iO-error occurred.", e.getMessage(), null);
             }

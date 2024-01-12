@@ -18,8 +18,7 @@ class SambaBrowser {
       'password': password,
     };
 
-    final List drives = await _channel.invokeMethod('getShareList', args);
-    return drives;
+    return await _channel.invokeMethod('getShareList', args);
   }
 
   /// Save a file with a specified name under a given folder.
@@ -35,37 +34,34 @@ class SambaBrowser {
       'password': password,
     };
 
-    final String filePath = await _channel.invokeMethod('saveFile', args);
-    return filePath;
+    return await _channel.invokeMethod('saveFile', args);
   }
 
   /// Upload a file with a specified name under a given folder.
   /// The [domain] parameter is only required under Android.
-  static Future<String> uploadFile(String uploadFolder, String fileName, String path, String domain, String username, String password) async {
+  static Future<String> uploadFile(String uploadFolder, String uploadFileName, String filePath, String domain, String username, String password) async {
     Map<String, String> args = {
       'uploadFolder': uploadFolder.endsWith('/') ? uploadFolder : '$uploadFolder/',
-      'fileName': fileName.startsWith('/') ? fileName.replaceFirst('/', '') : fileName,
-      'path': path,
+      'uploadFileName': uploadFileName.startsWith('/') ? uploadFileName.replaceFirst('/', '') : uploadFileName,
+      'filePath': filePath,
       'domain': domain,
       'username': username,
       'password': password,
     };
 
-    final String filePath = await _channel.invokeMethod('uploadFile', args);
-    return filePath;
+    return await _channel.invokeMethod('uploadFile', args);
   }
 
   /// Delete a file with a specified name.
   /// The [domain] parameter is only required under Android.
-  static Future<String> deleteFile(String fileName, String domain, String username, String password) async {
+  static Future<String> deleteFile(String url, String domain, String username, String password) async {
     Map<String, String> args = {
-      'fileName': fileName.startsWith('/') ? fileName.replaceFirst('/', '') : fileName,
+      'url': url,
       'domain': domain,
       'username': username,
       'password': password,
     };
 
-    final String filePath = await _channel.invokeMethod('deleteFile', args);
-    return filePath;
+    return await _channel.invokeMethod('deleteFile', args);
   }
 }
