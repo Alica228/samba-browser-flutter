@@ -37,7 +37,9 @@ public class SambaFileUploader {
                 FileInputStream inStream = new FileInputStream(inFile);
 
                 SmbFile directory = new SmbFile(call.argument("uploadFolder").toString(), new NtlmPasswordAuthentication(call.argument("domain"), call.argument("username"), call.argument("password")));
-                directory.mkdirs();
+                if (!directory.exists()) {
+                    directory.mkdirs();
+                }
                 SmbFile file = new SmbFile(call.argument("uploadFolder").toString() + call.argument("uploadFileName").toString(), new NtlmPasswordAuthentication(call.argument("domain"), call.argument("username"), call.argument("password")));
                 SmbFileOutputStream out = new SmbFileOutputStream(file);
                 
