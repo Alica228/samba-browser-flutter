@@ -62,6 +62,21 @@ class SambaBrowser {
       'password': password,
     };
 
-    return await _channel.invokeMethod('deleteFile', args);
+    return await _channel.invokeMethod('uploadFile', args);
+  }
+
+  /// Copy a file with a specified sourcePath to destinationPath withour downloading.
+  /// The [domain] parameter is only required under Android.
+  static Future<String> copyFile(String sourceFilePath, String destinationPath, String destinationFile, String domain, String username, String password) async {
+    Map<String, String> args = {
+      'sourceFilePath': sourceFilePath,
+      'destinationPath': destinationPath.endsWith('/') ? destinationPath : '$destinationPath/',
+      'destinationFile': destinationFile,
+      'domain': domain,
+      'username': username,
+      'password': password,
+    };
+
+    return await _channel.invokeMethod('copyFile', args);
   }
 }
