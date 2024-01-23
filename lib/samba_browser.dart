@@ -62,7 +62,7 @@ class SambaBrowser {
       'password': password,
     };
 
-    return await _channel.invokeMethod('uploadFile', args);
+    return await _channel.invokeMethod('deleteFile', args);
   }
 
   /// Copy a file with a specified sourcePath to destinationPath withour downloading.
