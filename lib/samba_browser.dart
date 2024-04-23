@@ -79,4 +79,17 @@ class SambaBrowser {
 
     return await _channel.invokeMethod('copyFile', args);
   }
+
+  /// Returns size of file under requested url.
+  /// The [domain] parameter is only required under Android.
+  static Future<int> sizeFile(String url, String domain, String username, String password) async {
+    Map<String, String> args = {
+      'url': url,
+      'domain': domain,
+      'username': username,
+      'password': password,
+    };
+
+    return await _channel.invokeMethod('sizeFile', args);
+  }
 }

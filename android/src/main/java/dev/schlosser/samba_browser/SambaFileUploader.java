@@ -12,14 +12,17 @@ import java.util.concurrent.Executors;
 
 import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
-import jcifs.smb.NtlmPasswordAuthentication;
+import jcifs.CIFSContext;
+import jcifs.Credentials;
+import jcifs.context.SingletonContext;
+import jcifs.smb.NtlmPasswordAuthenticator;
 import jcifs.smb.SmbAuthException;
 import jcifs.smb.SmbFile;
 import jcifs.smb.SmbFileOutputStream;
 
 public class SambaFileUploader {
 
-    private static final int FILE_CACHE_SIZE = 8192;
+    private static final int FILE_CACHE_SIZE = 8 * 1024;
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     static void uploadFile(MethodCall call, MethodChannel.Result result)  {
@@ -36,11 +39,14 @@ public class SambaFileUploader {
                 File inFile = new File(filePath);
                 FileInputStream inStream = new FileInputStream(inFile);
 
-                SmbFile directory = new SmbFile(call.argument("uploadFolder").toString(), new NtlmPasswordAuthentication(call.argument("domain"), call.argument("username"), call.argument("password")));
+                SingletonContext baseContext = SingletonContext.getInstance();
+                Credentials credentials = new NtlmPasswordAuthenticator(call.argument("domain"), call.argument("username"), call.argument("password"));
+                CIFSContext ts = baseContext.withCredentials(credentials);
+                SmbFile directory = new SmbFile(call.argument("uploadFolder").toString(), ts);
                 if (!directory.exists()) {
                     directory.mkdirs();
                 }
-                SmbFile file = new SmbFile(call.argument("uploadFolder").toString() + call.argument("uploadFileName").toString(), new NtlmPasswordAuthentication(call.argument("domain"), call.argument("username"), call.argument("password")));
+                SmbFile file = new SmbFile(call.argument("uploadFolder").toString() + call.argument("uploadFileName").toString(), ts);
                 SmbFileOutputStream out = new SmbFileOutputStream(file);
                 
                 byte[] fileBytes = new byte[FILE_CACHE_SIZE];

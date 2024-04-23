@@ -8,7 +8,7 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:4.1.0'
+        classpath 'com.android.tools.build:gradle:7.4.2'
     }
 }
 
@@ -35,5 +35,5 @@ android {
 }
 
 dependencies {
-    implementation 'jcifs:jcifs:1.3.17'
+    implementation 'org.codelibs:jcifs:2.1.37'
 }

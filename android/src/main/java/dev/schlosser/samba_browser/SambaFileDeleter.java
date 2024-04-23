@@ -12,7 +12,10 @@ import java.util.concurrent.Executors;
 
 import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
-import jcifs.smb.NtlmPasswordAuthentication;
+import jcifs.CIFSContext;
+import jcifs.Credentials;
+import jcifs.context.SingletonContext;
+import jcifs.smb.NtlmPasswordAuthenticator;
 import jcifs.smb.SmbAuthException;
 import jcifs.smb.SmbFile;
 
@@ -30,7 +33,10 @@ public class SambaFileDeleter {
 
         executor.execute(() -> {
             try {
-                SmbFile file = new SmbFile(url, new NtlmPasswordAuthentication(call.argument("domain"), call.argument("username"), call.argument("password")));
+                SingletonContext baseContext = SingletonContext.getInstance();
+                Credentials credentials = new NtlmPasswordAuthenticator(call.argument("domain"), call.argument("username"), call.argument("password"));
+                CIFSContext ts = baseContext.withCredentials(credentials);
+                SmbFile file = new SmbFile(url, ts);
                 file.delete();
                 result.success("");
 

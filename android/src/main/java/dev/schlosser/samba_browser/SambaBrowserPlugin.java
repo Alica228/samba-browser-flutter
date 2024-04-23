@@ -14,7 +14,6 @@ import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler;
 import io.flutter.plugin.common.MethodChannel.Result;
-import jcifs.smb.NtlmPasswordAuthentication;
 import jcifs.smb.SmbException;
 import jcifs.smb.SmbFile;
 
@@ -54,6 +53,11 @@ public class SambaBrowserPlugin implements FlutterPlugin, MethodCallHandler {
 
     if (call.method.equals("copyFile")) {
       SambaFileCopier.copyFile(call, result);
+      return;
+    }
+
+    if (call.method.equals("sizeFile")) {
+      SambaFileSize.sizeFile(call, result);
       return;
     }
 

@@ -12,7 +12,10 @@ import java.util.concurrent.Executors;
 
 import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
-import jcifs.smb.NtlmPasswordAuthentication;
+import jcifs.CIFSContext;
+import jcifs.Credentials;
+import jcifs.context.SingletonContext;
+import jcifs.smb.NtlmPasswordAuthenticator;
 import jcifs.smb.SmbAuthException;
 import jcifs.smb.SmbFile;
 import jcifs.smb.SmbFileInputStream;
@@ -39,13 +42,16 @@ public class SambaFileCopier {
 
         executor.execute(() -> {
             try {
-                SmbFile directory = new SmbFile(destinationPath, new NtlmPasswordAuthentication(call.argument("domain"), call.argument("username"), call.argument("password")));
+                SingletonContext baseContext = SingletonContext.getInstance();
+                Credentials credentials = new NtlmPasswordAuthenticator(call.argument("domain"), call.argument("username"), call.argument("password"));
+                CIFSContext ts = baseContext.withCredentials(credentials);
+                SmbFile directory = new SmbFile(destinationPath, ts);
                 if (!directory.exists()) {
                     directory.mkdirs();
                 }
 
-                SmbFile sFile = new SmbFile(sourceFilePath, new NtlmPasswordAuthentication(call.argument("domain"), call.argument("username"), call.argument("password")));
-                SmbFile dFile = new SmbFile(destinationPath + destinationFile, new NtlmPasswordAuthentication(call.argument("domain"), call.argument("username"), call.argument("password")));
+                SmbFile sFile = new SmbFile(sourceFilePath, ts);
+                SmbFile dFile = new SmbFile(destinationPath + destinationFile, ts);
                 sFile.copyTo(dFile);
                 result.success("");
 
