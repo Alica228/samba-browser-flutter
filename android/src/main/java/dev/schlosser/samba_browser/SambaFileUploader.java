@@ -22,7 +22,7 @@ import jcifs.smb.SmbFileOutputStream;
 
 public class SambaFileUploader {
 
-    private static final int FILE_CACHE_SIZE = 8 * 1024;
+    private static final int FILE_CACHE_SIZE = 64 * 1024;
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     static void uploadFile(MethodCall call, MethodChannel.Result result)  {
