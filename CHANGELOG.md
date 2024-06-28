@@ -1,6 +1,6 @@
 ## 0.0.3
 
-* new method SambaBrowser.uploadFile.
+* new methods.
 
 ## 0.0.2
 
