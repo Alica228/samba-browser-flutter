@@ -1,12 +1,12 @@
 name: samba_browser
 description: A package capable of performing several operations on shares using the SMB2 specification.
-version: 0.0.3
+version: 0.0.4
 repository: https://github.com/Schloool/samba-browser-flutter
 issue_tracker: https://github.com/Schloool/samba-browser-flutter/issues
 
 environment:
-  sdk: ">=2.16.2 <3.0.0"
-  flutter: ">=2.5.0"
+  sdk: '>=2.16.2 <3.0.0'
+  flutter: '>=2.5.0'
 
 dependencies:
   flutter:
